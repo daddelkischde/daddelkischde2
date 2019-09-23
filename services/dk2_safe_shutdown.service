@@ -1,0 +1,12 @@
+[Unit]
+Description=daddelkischde 2 safe shutdown
+Requires=dk2_sercom_proxy.service
+After=dk2_sercom_proxy.service
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/python /home/pi/daddelkischde2/safe_shutdown.py
+Restart=on-abort
+
+[Install]
+WantedBy=multi-user.target

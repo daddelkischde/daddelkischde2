@@ -1,0 +1,10 @@
+[Unit]
+Description=daddelkischde 2 serial communication proxy
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/python /home/pi/daddelkischde2/sercom/sercom_proxy.py
+Restart=on-abort
+
+[Install]
+WantedBy=multi-user.target

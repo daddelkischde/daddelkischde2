@@ -1,0 +1,12 @@
+[Unit]
+Description=daddelkischde 2 fan control
+Requires=dk2_sercom_proxy.service
+After=dk2_sercom_proxy.service
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/python /home/pi/daddelkischde2/fan_control.py
+Restart=on-abort
+
+[Install]
+WantedBy=multi-user.target
