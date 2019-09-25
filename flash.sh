@@ -34,7 +34,7 @@ echo "Waiting for bootloader..."
 sleep 3
 
 echo "Flashing..."
-avrdude -v -p atmega32u4 -c avr109 -P $port -b 57600 -D -U flash:w:daddelkischde_mcu.ino.hex:i
+avrdude -v -p atmega32u4 -c avr109 -P $port -b 57600 -D -U flash:w:firmware/daddelkischde_mcu.ino.hex:i
 
 echo "Waiting for reboot to finish..."
 sleep 20

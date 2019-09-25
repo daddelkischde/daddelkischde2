@@ -10,10 +10,21 @@ function show_msg()
 	dialog --backtitle "$backtitle" --msgbox "$msg" 10 40
 }
 
+function yes_no_box()
+{
+	local msg="$1"
+	
+	if dialog --backtitle "$backtitle" --yesno "$msg" 10 40 >/dev/tty; then
+		return 0
+	else
+		return 1
+	fi
+}
+
 function edit_file()
 {
 	local file="$1"
-	local cmd=(dialog --backtitle "$__backtitle" --editbox "$file" 22 76)
+	local cmd=(dialog --backtitle "$backtitle" --editbox "$file" 22 76)
 	local choice=$("${cmd[@]}" 2>&1 >/dev/tty)
 	
     [[ -n "$choice" ]] && echo "$choice" >"$file"
@@ -307,13 +318,19 @@ function update_scripts_gui()
 
 function update_firmware_gui()
 {
-	show_msg "Sorry, not implemented yet!"
+	echo "Updating files..."
 	
-	first_version=5.100.2
-	second_version=5.1.2
+	git -C $scriptdir pull
 	
-	if [ "$(version "$first_version")" -gt "$(version "$second_version")" ]; then
-		 echo "$first_version is greater than $second_version !"
+	version_available=$(<${scriptdir}/firmware/version.txt)
+	version_device=$(python ${scriptdir}control.py get_version)
+	
+	if [ "$(version "$version_available")" -gt "$(version "$version_device")" ]; then
+		 if yes_no_box "An update to version $second_version is available!\nDo you want to update now?"; then
+			${scriptdir}flash.sh
+		 fi
+	else
+		show_msg "No update available."
 	fi
 }
 
