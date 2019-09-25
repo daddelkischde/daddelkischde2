@@ -7,16 +7,16 @@
 
 # uncomment this if your display has a black border of unused pixels visible
 # and your display can output without overscan
-disable_overscan=0
+#disable_overscan=1
 
 # uncomment the following to adjust overscan. Use positive numbers if console
 # goes off screen, and negative if there is too much border
-overscan_left=30
-overscan_right=0
-overscan_top=0
-overscan_bottom=0
+#overscan_left=30
+#overscan_right=0
+#overscan_top=0
+#overscan_bottom=0
 
-overscan_scale=1
+#overscan_scale=1
 
 # uncomment to force a console size. By default it will be display's size minus
 # overscan.
@@ -63,7 +63,6 @@ audio_pwm_mode=2
 
 # Safe shutdown
 dtoverlay=gpio-poweroff,gpiopin=27,active_low
-#dtoverlay=gpio-shutdown,gpio_pin=10,active_low=1,gpio_pull=up
 
 # GPU memory (Pi Zero and Pi 3A+ have 512 MB)
 gpu_mem_256=128
@@ -79,4 +78,4 @@ extra_transpose_buffer=2
 dpi_group=2
 dpi_mode=87
 dpi_output_format=459286
-hdmi_timings=320 0 10 10 10 480 0 5 2 5 0 0 0 60 0 9600000 2
+dpi_timings=320 0 10 10 10 480 0 5 2 5 0 0 0 60 0 9600000 2
