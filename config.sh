@@ -6,14 +6,14 @@ scriptdir="/home/pi/daddelkischde2/"
 function show_msg()
 {
 	local msg="$1"
-	
+
 	dialog --backtitle "$backtitle" --msgbox "$msg" 10 40
 }
 
 function yes_no_box()
 {
 	local msg="$1"
-	
+
 	if dialog --backtitle "$backtitle" --yesno "$msg" 10 40 >/dev/tty; then
 		return 0
 	else
@@ -26,8 +26,8 @@ function edit_file()
 	local file="$1"
 	local cmd=(dialog --backtitle "$backtitle" --editbox "$file" 22 76)
 	local choice=$("${cmd[@]}" 2>&1 >/dev/tty)
-	
-    [[ -n "$choice" ]] && echo "$choice" >"$file"
+
+	[[ -n "$choice" ]] && echo "$choice" >"$file"
 }
 
 function version()
@@ -38,19 +38,19 @@ function version()
 function joystick_gui()
 {
 	local default
-	
+
 	while true; do
 		local status=$(python ${scriptdir}control.py get_joystick_enabled)
-		
+
 		local cmd=(dialog --backtitle "$backtitle" --title "Joystick" --cancel-label "Back" --default-item "$default" --menu "Status: $status" 16 40 16)
 		local options=(
 			E "Enable"
 			D "Disable"
 			C "Calibrate"
 		)
-		
+
 		local choice=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
-		
+
 		if [[ -n "$choice" ]]; then
 			case "$choice" in
 				E)
@@ -73,22 +73,22 @@ function joystick_gui()
 function battery_monitor_gui()
 {
 	local default
-	
+
 	while true; do
 		local status=$(systemctl is-active dk2_batmon.service)
-		
+
 		local cmd=(dialog --backtitle "$backtitle" --title "Battery monitor" --cancel-label "Back" --default-item "$default" --menu "Status: $status" 16 40 16)
 		local options=(
 			E "Enable"
 			D "Disable"
 			C "Edit configuration file"
 		)
-		
+
 		local choice=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
-		
+
 		if [[ -n "$choice" ]]; then
 			default="$choice"
-			
+
 			case "$choice" in
 				E)
 					sudo systemctl enable dk2_batmon.service
@@ -111,12 +111,12 @@ function battery_monitor_gui()
 function fan_control_gui()
 {
 	local default
-	
+
 	while true; do
 		local status=$(systemctl is-active dk2_fan_control.service)
 		local fan_state=$(python ${scriptdir}control.py get_fan)
 		local temp=$(vcgencmd measure_temp)
-		
+
 		local cmd=(dialog --backtitle "$backtitle" --title "Fan control" --cancel-label "Back" --default-item "$default" --menu "Status: $status\nFan: $fan_state\nCPU $temp" 16 40 16)
 		local options=(
 			E "Enable automatic fan control"
@@ -125,12 +125,12 @@ function fan_control_gui()
 			F "Turn fan off"
 			C "Edit configuration file"
 		)
-		
+
 		local choice=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
-		
+
 		if [[ -n "$choice" ]]; then
 			default="$choice"
-			
+
 			case "$choice" in
 				E)
 					sudo systemctl enable dk2_fan_control.service
@@ -159,21 +159,21 @@ function fan_control_gui()
 function safe_shutdown_gui()
 {
 	local default
-	
+
 	while true; do
 		local status=$(systemctl is-active dk2_safe_shutdown.service)
-		
+
 		local cmd=(dialog --backtitle "$backtitle" --title "Safe shutdown" --cancel-label "Back" --default-item "$default" --menu "Status: $status" 16 40 16)
 		local options=(
 			E "Enable"
 			D "Disable"
 		)
-		
+
 		local choice=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
-		
+
 		if [[ -n "$choice" ]]; then
 			default="$choice"
-			
+
 			case "$choice" in
 				E)
 					sudo systemctl enable dk2_safe_shutdown.service
@@ -193,20 +193,20 @@ function safe_shutdown_gui()
 function boot_logo_gui()
 {
 	local default
-	
+
 	while true; do
 		local display_time=$(python ${scriptdir}control.py get_logo_display)
-	
+
 		local cmd=(dialog --backtitle "$backtitle" --title "Boot logo" --cancel-label "Back" --default-item "$default" --menu "You can configure how long the boot logo is displayed (in milliseconds). Set to 0 to disable the boot logo.\n\nCurrent display time: $display_time ms" 16 40 16)
 		local options=(
 			C "Change display time"
 		)
-		
+
 		local choice=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
-		
+
 		if [[ -n "$choice" ]]; then
 			default="$choice"
-			
+
 			case "$choice" in
 				C)
 					boot_logo_change_gui
@@ -222,10 +222,10 @@ function boot_logo_change_gui()
 {
 	while true; do
 		local display_time=$(python ${scriptdir}control.py get_logo_display)
-		
+
 		local cmd=(dialog --backtitle "$backtitle" --inputbox "Boot logo display time in milliseconds. Set to 0 to disable the boot logo." 10 40 $display_time)
 		local choice=$("${cmd[@]}" 2>&1 >/dev/tty)
-		
+
 		if [[ -n "${choice//[0-9]/}" ]] || [[ "$choice" -lt 0 ]] || [[ "$choice" -gt 60000 ]]; then
 			show_msg "Please enter a valid number between 0 and 60000!"
 		elif [[ -n "$choice" ]]; then
@@ -240,7 +240,7 @@ function boot_logo_change_gui()
 function button_combos_gui()
 {
 	local default
-	
+
 	while true; do
 		local cmd=(dialog --backtitle "$backtitle" --title "Button combos" --cancel-label "Back" --default-item "$default" --menu "Button combinations for special functions." 22 60 16)
 		local options=(
@@ -249,12 +249,12 @@ function button_combos_gui()
 			O "Fan on"
 			F "Fan off"
 		)
-		
+
 		local choice=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
-		
+
 		if [[ -n "$choice" ]]; then
 			default="$choice"
-			
+
 			case "$choice" in
 				I)
 					button_combo_edit_gui "brightness increase" "backlight_inc"
@@ -284,9 +284,9 @@ function button_combo_edit_gui()
 	while true; do
 		local buttons=$(python ${scriptdir}control.py get_button_combo $combo_name_internal)
 		local options=()
-	
+
 		IFS=',' read -r -a options <<< "$buttons"
-	
+
 		local cmd=(dialog --backtitle "$backtitle" --title "Button combos" --cancel-label "Back" --default-item "$default" --checklist "Select the buttons you wish to use for $combo_name." 29 60 22)
 
 		local choice=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
@@ -308,7 +308,7 @@ function button_combo_edit_gui()
 function update_scripts_gui()
 {
 	local result=$(git -C ${scriptdir} pull)
-	
+
 	if [[ "$result" == "Already up-to-date." ]]; then
 		show_msg "No update found."
 	else
@@ -319,14 +319,14 @@ function update_scripts_gui()
 function update_firmware_gui()
 {
 	echo "Updating files..."
-	
+
 	git -C $scriptdir pull
-	
+
 	version_available=$(<${scriptdir}/firmware/version.txt)
 	version_device=$(python ${scriptdir}control.py get_version)
-	
+
 	if [ "$(version "$version_available")" -gt "$(version "$version_device")" ]; then
-		 if yes_no_box "An update to version $second_version is available!\nDo you want to update now?"; then
+		 if yes_no_box "An update to version $version_available is available.\nDo you want to update now?"; then
 			${scriptdir}flash.sh
 		 fi
 	else
@@ -337,7 +337,7 @@ function update_firmware_gui()
 function main_gui()
 {
 	local default
-	
+
 	while true; do
 		local fw_version=$(python ${scriptdir}control.py get_version)
 		local cmd=(dialog --backtitle "$backtitle" --title "daddelkischde 2 setup" --cancel-label "Exit" --default-item "$default" --menu "Firmware version: $fw_version" 18 60 16)
@@ -351,12 +351,12 @@ function main_gui()
 			R "Update scripts"
 			U "Update firmware"
 		)
-		
+
 		local choice=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
-		
+
 		if [[ -n "$choice" ]]; then
 			default="$choice"
-			
+
 			case "$choice" in
 				J)
 					joystick_gui
