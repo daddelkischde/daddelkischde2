@@ -1,4 +1,4 @@
-# daddelkischde2 #
+# daddelkischde 2 #
 
 This repository contains all the scripts and files for the [daddelkischde 2](http://www.daddelkischde.de) board.
 
@@ -6,4 +6,4 @@ This repository contains all the scripts and files for the [daddelkischde 2](htt
 
 Run the following command from SSH on RetroPie or Recalbox to automatically install everything:
 
-`wget -O - "http://www.daddelkischde.de/downloads/setup_dk2.sh" | sudo bash`
+`wget -O - "http://www.daddelkischde.de/downloads/setup_dk2.sh" | bash`
