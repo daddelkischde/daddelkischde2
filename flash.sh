@@ -17,7 +17,7 @@ stop_service()
 start_service()
 {
 	service=$1
-	
+
 	echo "Starting $service service..."
 	sudo systemctl start $service.service
 }
