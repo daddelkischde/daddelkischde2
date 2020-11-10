@@ -31,13 +31,13 @@ stop_service dk2_sercom_proxy
 echo "Resetting..."
 python ${scriptdir}reset.py $port
 
-echo "Waiting for bootloader..."
+echo "Waiting 3 seconds for bootloader..."
 sleep 3
 
 echo "Flashing..."
 avrdude -v -p atmega32u4 -c avr109 -P $port -b 57600 -D -U flash:w:${scriptdir}firmware/daddelkischde_mcu.ino.hex:i
 
-echo "Waiting for reboot to finish..."
+echo "Waiting 20 seconds for reboot to finish, please be patient and don't cancel..."
 sleep 20
 
 echo "Restarting services..."
