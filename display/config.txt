@@ -58,8 +58,13 @@ overscan_left=32
 dtparam=audio=on
 
 # Audio output pins
-dtoverlay=pwm-2chan,pin=18,func=2,pin2=19,func2=2
 audio_pwm_mode=2
+
+# for Raspbian Stretch or lower:
+#dtoverlay=pwm-2chan,pin=18,func=2,pin2=19,func2=2
+
+# for Raspbian Buster and higher:
+dtoverlay=audremap,pins_18_19
 
 # Safe shutdown
 dtoverlay=gpio-poweroff,gpiopin=27,active_low
